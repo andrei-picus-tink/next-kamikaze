@@ -1,0 +1,12 @@
+{
+  "extends": "tdd-buffet/config/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [".next"]
+}

@@ -11,5 +11,15 @@
     "next": "9.1.1",
     "react": "16.10.2",
     "react-dom": "16.10.2"
+  },
+  "devDependencies": {
+    "@nighttrax/eslint-config-tsx": "~3.0.0",
+    "@types/react": "~16.9.6",
+    "@typescript-eslint/eslint-plugin": "~2.4.0",
+    "@typescript-eslint/parser": "~2.4.0",
+    "eslint": "~5.16.0",
+    "eslint-plugin-import": "~2.18.2",
+    "tdd-buffet": "~0.14.0",
+    "typescript": "~3.6.4"
   }
 }
