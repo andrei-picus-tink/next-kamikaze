@@ -43,8 +43,9 @@ export class TitleService extends StateContainer<TitleState> implements ITitleSe
     const data: {title: string} = await fetch(`${this.apiBase}/api/demo`)
       .then(r => r.json());
 
+    // Add a loading effect client side.
     if (typeof window !== 'undefined') {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 250));
     }
 
     this.setState({
