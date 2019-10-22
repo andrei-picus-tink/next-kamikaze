@@ -8,9 +8,12 @@ interface Props {
   data: Demo;
 }
 
+// eslint-disable-next-line prefer-destructuring
+const API_BASE = process.env.API_BASE;
+
 export default class Index extends Component<Props> {
   static getInitialProps = async (): Promise<Props> => {
-    const response = await fetch('http://localhost:3000/api/demo');
+    const response = await fetch(`${API_BASE}/api/demo`);
 
     return {
       data: await response.json()

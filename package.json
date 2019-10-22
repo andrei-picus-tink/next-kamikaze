@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "deploy": "yarn run build && now --prod"
   },
   "dependencies": {
     "isomorphic-unfetch": "~3.0.0",
@@ -20,6 +21,7 @@
     "@typescript-eslint/parser": "~2.4.0",
     "eslint": "~5.16.0",
     "eslint-plugin-import": "~2.18.2",
+    "now": "~16.3.1",
     "tdd-buffet": "~0.14.0",
     "typescript": "~3.6.4"
   }
