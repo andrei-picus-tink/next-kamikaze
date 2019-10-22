@@ -8,9 +8,13 @@ import { Home } from '../components/home';
 
 export type TitleState = {
   loading: true
+  hydrated?: boolean;
 } | {
   loading: false;
-  data: { title: string }
+  data: {
+    title: string;
+  };
+  hydrated?: boolean;
 };
 
 interface Props {
@@ -26,9 +30,9 @@ export class TitleService extends StateContainer<TitleState> implements ITitleSe
     super();
 
     if (initialState) {
-      this.state = initialState;
+      this.state = { ...initialState, hydrated: true };
     } else {
-      this.state = { loading: true };
+      this.state = { loading: true, hydrated: false };
       this.getData();
     }
   }
@@ -50,6 +54,7 @@ export class TitleService extends StateContainer<TitleState> implements ITitleSe
 
     this.setState({
       loading: false,
+      hydrated: false,
       data
     });
   }
@@ -59,6 +64,7 @@ export default class Index extends Component<Props> {
   static getInitialProps = async (): Promise<Props> => {
     const titleService = new TitleService(process.env.API_BASE!);
 
+    // On the client side we will refresh the data.
     if (typeof window !== 'undefined') {
       return {
         initialState: undefined
@@ -74,7 +80,9 @@ export default class Index extends Component<Props> {
     });
   };
 
-
+  // Always create a service. The instance lifecycle is tied to the page component's
+  // lifecycle. If there is data from the server we will hydrate with that, otherwise
+  // we'll fetch fresh data.
   private titleService = new TitleService(
     process.env.API_BASE!,
     this.props.initialState
