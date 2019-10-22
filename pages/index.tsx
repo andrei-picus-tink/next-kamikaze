@@ -28,6 +28,10 @@ export default class Index extends Component<Props> {
       </Head>
 
       <Home title={this.props.data.title} />
+
+      <h3 style={{ textAlign: 'center' }}>
+        <Link href="/about"><a>About</a></Link>
+      </h3>
     </div>;
   }
 }
