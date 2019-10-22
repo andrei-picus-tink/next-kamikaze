@@ -17,7 +17,9 @@ interface Props {
   initialState?: TitleState;
 }
 
-export interface ITitleService extends IStateContainer<TitleState> {}
+export interface ITitleService extends IStateContainer<TitleState> {
+  refresh: () => void;
+}
 
 export class TitleService extends StateContainer<TitleState> implements ITitleService {
   constructor(private apiBase: string, initialState?: TitleState) {
@@ -31,7 +33,13 @@ export class TitleService extends StateContainer<TitleState> implements ITitleSe
     }
   }
 
+  public refresh = () => {
+    this.getData();
+  };
+
   private async getData() {
+    this.setState({ loading: true });
+
     const data: {title: string} = await fetch(`${this.apiBase}/api/demo`)
       .then(r => r.json());
 
