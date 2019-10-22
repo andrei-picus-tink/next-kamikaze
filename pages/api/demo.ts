@@ -5,7 +5,9 @@ export interface Demo {
 }
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  const response: Demo = { title: 'Kamikaze time' };
+  const titles = ['Kamikaze time', 'Kaizen time', 'Chimichanga time'];
+  const index = Math.round(Math.random() * (titles.length - 1));
+  const response: Demo = { title: titles[index] };
 
   res.status(200).json(response);
 };
