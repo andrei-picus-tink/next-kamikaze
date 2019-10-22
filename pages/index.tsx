@@ -1,33 +1,91 @@
-import React, { Component } from 'react';
-import Head from 'next/head';
+/* eslint-disable react/sort-comp */
 import fetch from 'isomorphic-unfetch';
-import { Demo } from './api/demo';
+import Head from 'next/head';
+import Link from 'next/link';
+import React, { Component } from 'react';
+import connectToState, { IStateContainer, StateContainer } from 'react-connect-state';
 import { Home } from '../components/home';
 
+export type TitleState = {
+  loading: true
+} | {
+  loading: false;
+  data: { title: string }
+};
+
 interface Props {
-  data: Demo;
+  initialState?: TitleState;
 }
 
-// eslint-disable-next-line prefer-destructuring
-const API_BASE = process.env.API_BASE;
+export interface ITitleService extends IStateContainer<TitleState> {}
+
+export class TitleService extends StateContainer<TitleState> implements ITitleService {
+  constructor(private apiBase: string, initialState?: TitleState) {
+    super();
+
+    if (initialState) {
+      this.state = initialState;
+    } else {
+      this.state = { loading: true };
+      this.getData();
+    }
+  }
+
+  private async getData() {
+    const data: {title: string} = await fetch(`${this.apiBase}/api/demo`)
+      .then(r => r.json());
+
+    if (typeof window !== 'undefined') {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+
+    this.setState({
+      loading: false,
+      data
+    });
+  }
+}
 
 export default class Index extends Component<Props> {
   static getInitialProps = async (): Promise<Props> => {
-    const response = await fetch(`${API_BASE}/api/demo`);
+    const titleService = new TitleService(process.env.API_BASE!);
 
-    return {
-      data: await response.json()
-    };
+    if (typeof window !== 'undefined') {
+      return {
+        initialState: undefined
+      };
+    }
+
+    return new Promise(resolve => {
+      titleService.subscribe(state => {
+        if (!state.loading) {
+          resolve({ initialState: state });
+        }
+      });
+    });
   };
 
+
+  private titleService = new TitleService(
+    process.env.API_BASE!,
+    this.props.initialState
+  );
+
+  private ConnectedHome = connectToState(
+    Home,
+    { title: this.titleService }
+  );
+
   render() {
+    const { ConnectedHome } = this;
+
     return <div>
       <Head>
         <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Home title={this.props.data.title} />
+      <ConnectedHome />
 
       <h3 style={{ textAlign: 'center' }}>
         <Link href="/about"><a>About</a></Link>
