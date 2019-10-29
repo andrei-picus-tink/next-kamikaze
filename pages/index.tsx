@@ -10,17 +10,33 @@ interface Props {
   initialState?: TitleState;
 }
 
+let titleService: TitleService;
+
+function getTitleService(initialState?: TitleState) {
+  return new TitleService(process.env.API_BASE!, initialState);
+}
+
 export default class Index extends Component<Props> {
   static getInitialProps = async (): Promise<Props> => {
-    const titleService = new TitleService(process.env.API_BASE!);
+    // Always create a new service when the component is "mounted".
+    // On the server next.js will call this method and wait for it to resolve.
+    // On the client this will only be called if the user navigates to this
+    // route.
+    titleService = getTitleService();
 
-    // On the client side we will refresh the data.
+    // On the client side we want to fetch fresh data, but we don't want
+    // to block rendering the component until the data is ready - we want
+    // to show a loading spinner in the mean time.
     if (typeof window !== 'undefined') {
       return {
-        initialState: undefined
+        initialState: {
+          loading: true
+        }
       };
     }
 
+    // On the server side we block the request until data is ready and
+    // then we pass it to the client.
     return new Promise(resolve => {
       titleService.subscribe(state => {
         if (!state.loading) {
@@ -30,17 +46,14 @@ export default class Index extends Component<Props> {
     });
   };
 
-  // Always create a service. The instance lifecycle is tied to the page component's
-  // lifecycle. If there is data from the server we will hydrate with that, otherwise
-  // we'll fetch fresh data.
-  private titleService = new TitleService(
-    process.env.API_BASE!,
-    this.props.initialState
-  );
-
   private ConnectedHome = connectToState(
     Home,
-    { title: this.titleService }
+    {
+      // When we SSR we'll have a service instance. When we hydrate
+      // on the client we won't have an instance but we'll have initial
+      // data for it.
+      title: titleService || getTitleService(this.props.initialState)
+    }
   );
 
   render() {
