@@ -4,16 +4,16 @@ import Link from 'next/link';
 import React, { Component } from 'react';
 import connectToState from 'react-connect-state';
 import { Home } from '../components/home';
-import { TitleService, TitleState } from '../services/title';
+import { TitleData, TitleService } from '../services/title';
 
 interface Props {
-  initialState?: TitleState;
+  initialData?: TitleData;
 }
 
 let titleService: TitleService;
 
-function getTitleService(initialState?: TitleState) {
-  return new TitleService(process.env.API_BASE!, initialState);
+function getTitleService(initialData?: TitleData) {
+  return new TitleService(process.env.API_BASE!, initialData);
 }
 
 export default class Index extends Component<Props> {
@@ -28,11 +28,7 @@ export default class Index extends Component<Props> {
     // to block rendering the component until the data is ready - we want
     // to show a loading spinner in the mean time.
     if (typeof window !== 'undefined') {
-      return {
-        initialState: {
-          loading: true
-        }
-      };
+      return {};
     }
 
     // On the server side we block the request until data is ready and
@@ -40,7 +36,7 @@ export default class Index extends Component<Props> {
     return new Promise(resolve => {
       titleService.subscribe(state => {
         if (!state.loading) {
-          resolve({ initialState: state });
+          resolve({ initialData: state.data });
         }
       });
     });
@@ -52,7 +48,7 @@ export default class Index extends Component<Props> {
       // When we SSR we'll have a service instance. When we hydrate
       // on the client we won't have an instance but we'll have initial
       // data for it.
-      title: titleService || getTitleService(this.props.initialState)
+      title: titleService || getTitleService(this.props.initialData)
     }
   );
 

@@ -6,7 +6,7 @@ import Index from '../pages';
 
 describe('Index page', () => {
   it('should hydrate data', async () => {
-    const $container = $render(<Index initialState={{ loading: false, data: { title: 'foobar' } }} />);
+    const $container = $render(<Index initialData={{ title: 'foobar' }} />);
 
     await wait(() => {
       expect($container.text()).to.contain('foobar');
