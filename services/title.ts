@@ -3,13 +3,11 @@ import { IStateContainer, StateContainer } from 'react-connect-state';
 
 export type TitleState = {
   loading: true
-  hydrated?: boolean;
 } | {
   loading: false;
   data: {
     title: string;
   };
-  hydrated?: boolean;
 };
 
 export interface ITitleService extends IStateContainer<TitleState> {
@@ -21,14 +19,10 @@ export class TitleService extends StateContainer<TitleState> implements ITitleSe
     super();
 
     if (initialState) {
-      this.state = {
-        ...initialState,
-        hydrated: true
-      };
+      this.state = initialState;
     } else {
       this.state = {
-        loading: true,
-        hydrated: false
+        loading: true
       };
       this.getData();
     }
@@ -51,7 +45,6 @@ export class TitleService extends StateContainer<TitleState> implements ITitleSe
 
     this.setState({
       loading: false,
-      hydrated: false,
       data
     });
   }
