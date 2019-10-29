@@ -1,0 +1,10 @@
+{
+  "env": {
+    "API_BASE": "@api_base"
+  },
+  "build": {
+    "env": {
+      "API_BASE": "@api_base"
+    }
+  }
+}
