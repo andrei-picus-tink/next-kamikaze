@@ -27,3 +27,9 @@ yarn run dev
   - `isolatedModules: true`: prevents some type errors to be picked up across files
   - fortunately I could override them in the Jest config
 - Creating isomorphic API services is not trivial.
+- Apart from env variables, now.sh is pretty nifty:
+  - keeps a list of deploys in the dashboard
+  - can view build and runtime logs
+  - deploys automatically get a unique domain
+  - any deploy can be promoted to production
+  - 1 click rollback
