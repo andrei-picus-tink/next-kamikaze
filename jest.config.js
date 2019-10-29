@@ -7,7 +7,9 @@ module.exports = {
     'ts-jest': {
       tsConfig: {
         // next.js is forcing `preserve` on us so we switch back to `react`
-        jsx: 'react'
+        jsx: 'react',
+        // next.js is forcing `true` because of Babel.
+        isolatedModules: false
       }
     }
   }
