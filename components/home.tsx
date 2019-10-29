@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ITitleService } from '../pages';
+import { ITitleService } from '../services/title';
 
 interface Props {
   title: ITitleService;

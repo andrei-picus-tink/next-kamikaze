@@ -4,7 +4,7 @@ import Mock from 'strong-mock';
 import { expect } from 'tdd-buffet/expect/chai';
 import { describe, it } from 'tdd-buffet/suite/node';
 import { Home } from '../components/home';
-import { ITitleService } from '../pages';
+import { ITitleService } from '../services/title';
 
 describe('Home', () => {
   it('should have a loading state', () => {
