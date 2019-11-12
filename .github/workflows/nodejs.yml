@@ -26,11 +26,9 @@ jobs:
         node-version: '12'
 
     - name: Install
-      uses: actions/setup-node@v1
       run: yarn
 
     - name: Lint
-      uses: actions/setup-node@v1
       run: yarn lint
 
     - name: Test
