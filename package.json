@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "test": "tdd-buffet test --config jest.config.js",
     "build": "next build",
     "start": "next start",
     "deploy": "yarn run build && now --prod"
