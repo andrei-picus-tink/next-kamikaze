@@ -15,6 +15,12 @@ jobs:
       with:
         node-version: '12'
 
+    - name: Lint
+      uses: actions/setup-node@v1
+      run: |
+        yarn
+        yarn lint
+
     - name: Install and test
       run: |
         yarn
