@@ -10,20 +10,30 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
+    - name: Cache node_modules
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
+
     - name: Use Node.js
       uses: actions/setup-node@v1
       with:
         node-version: '12'
 
+    - name: Install
+      uses: actions/setup-node@v1
+      run: yarn
+
     - name: Lint
       uses: actions/setup-node@v1
-      run: |
-        yarn
-        yarn lint
+      run: yarn lint
 
-    - name: Install and test
-      run: |
-        yarn
-        yarn test
+    - name: Test
+      run: yarn test
       env:
         CI: true
