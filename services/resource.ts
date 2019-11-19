@@ -18,7 +18,8 @@ export abstract class ResourceContainer<T> extends StateContainer<ResourceState<
       };
     } else {
       this.state = { loading: true };
-      this.getData();
+      // Wait for the constructor to finish before calling this.
+      setImmediate(() => { this.getData(); });
     }
   }
 
