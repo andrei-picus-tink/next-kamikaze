@@ -25,7 +25,7 @@ export class Home extends Component<Props> {
     }
 
     return <span>
-      Welcome to {title.state.data.title}
+      Welcome to <span style={{ textTransform: 'capitalize' }}>{title.state.data.title}</span> time
     </span>;
   }
 }
